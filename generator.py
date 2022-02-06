@@ -40,7 +40,7 @@ def generate(username):
     Returns generated tweets along with meta data on model run with format:
       <GenerateResponse tweets=["hi"] tweet_count=200>
     """
-    user = user_cache[username.lower()]
+    user = fetch_user(username)
 
     # Only fetch from cache if existing search has enough tweets (200)
     if user.id in user_tweet_model_cache and user_tweet_model_cache[user.id][1] >= 200:
