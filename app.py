@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import generator
 
-# Configure application
 app = Flask(__name__)
 
 
@@ -40,4 +39,4 @@ def handle_exception(e):
     return render_template("gen.html", step="ERROR", e=e), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
