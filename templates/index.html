@@ -1,49 +1,14 @@
 {% extends "layout.html" %}
 
+{% block nav %}
+<a class="nav-link active" aria-current="page" href="/">Home</a>
+<a class="nav-link" href="/about">About</a>
+{% endblock nav %}
+
 {% block body %}
-    <a href="/about"><button type="button">About</button></a>
-
-    <h2>Find a user!</h2>
-
-    {% if step == "INTRO" %}
-        <form class="d-flex" action="/">
-            <input class="form-control me-2" name="username" type="search" autocomplete="off" placeholder="Find user" aria-label="Find user" type="submit" required>
-        </form>
-    {% endif %}
-
-    {% if step == "USER" %}
-        {% if user %}
-            <h2>User found:</h2>
-            <p>{{ user.id }}</p>
-            <p>{{ user.name }}</p>
-            <p>{{ user.username }}</p>
-            <form class="d-flex" action="/">
-                <input type="hidden" name="generate" value="{{ user.username }}">
-                <input type="submit" value="Generate?">
-            </form>
-            <a href="/"><button type="button">Start again?</button></a>
-        {% else %}
-            <p>User not found, search again</p>
-            <form class="d-flex" action="/">
-                <input class="form-control me-2" name="username" type="search" autocomplete="off" placeholder="Find user" aria-label="Find user" type="submit" required>
-            </form>
-        {% endif %}
-    {% endif %}
-
-    {% if step == "GENERATE" %}
-        <p>Ran model on {{ generated_tweets.model_tweet_count }} tweets from {{ username }}</p>
-        {% if generated_tweets.tweets %}
-          {% for tweet in generated_tweets.tweets %}
-              <h4>Tweet generated:</h4>
-              <p>{{ tweet.text }}</p>
-          {% endfor %}
-        {% else %}
-            <p>No tweets could be generated :(</p>
-        {% endif %}
-        <form class="d-flex" action="/">
-            <input type="hidden" name="generate" value="{{ username }}">
-            <input type="submit" value="Regenerate?">
-        </form>
-        <a href="/"><button type="button">Start again?</button></a>
-    {% endif %}
+<h1>Welcome to Tweet Gen.</h1>
+<p class="lead">Ever wondered whether an AI could mimic a human? Or even a specific person? Create entirely unique phrases in the style of any Twitter user in just a few clicks.</p>
+<p class="lead">
+  <a href="/gen" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Let's go!</a>
+</p>
 {% endblock body %}

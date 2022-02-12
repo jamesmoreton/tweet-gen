@@ -3,39 +3,41 @@ import generator
 
 # Configure application
 app = Flask(__name__)
-app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route("/")
 def index():
+    return render_template("index.html")
+
+@app.route("/gen")
+def gen():
     username = request.args.get("username")
     generate = request.args.get("generate")
 
     if username:
         user = generator.fetch_user(username)  # todo validate input...
         if user:
-            return render_template("index.html", step="USER", user=user)
-        return render_template("index.html", step="USER")
+            return render_template("gen.html", step="USER", user=user)
+        return render_template("gen.html", step="USER", username=username)
 
     if generate:
         generated_tweets = generator.generate(generate)
         return render_template(
-            "index.html",
+            "gen.html",
             step="GENERATE",
             username=generate,
             generated_tweets=generated_tweets
         )
 
-    return render_template("index.html", step="INTRO")
-
+    return render_template("gen.html", step="START")
 
 @app.route("/about")
 def about():
     return render_template("about.html", title="About")
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    return render_template("gen.html", step="ERROR", e=e), 500
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
