@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block nav %}
+<a class="nav-link active" aria-current="page" href="/">Home</a>
+<a class="nav-link" href="/about">About</a>
+{% endblock nav %}
+
+{% block body %}
+  {% if step == "START" %}
+  <h1>Find a user.</h1>
+  <p class="text-muted">Enter the Twitter username exactly as it appears on the profile</p>
+  <form class="px-5 pb-2 px-md-5 text-black no-shadow" action="/gen">
+    <div class="form-floating">
+      <input type="search" class="form-control" id="floatingInput" name="username" placeholder="elonmusk" type="submit" autocomplete="off" required>
+      <label for="floatingInput">Twitter username</label>
+    </div>
+  </form>
+  {% endif %}
+
+  {% if step == "USER" %}
+    {% if user %}
+      <h1>Found {{ user.name }}.</h1>
+      <div class="py-4">
+        <a href="https://twitter.com/{{ user.username }}" class="twitter-follow-button" data-size="large" data-show-count="true">@{{ user.username }}</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
+      <form class="lead" action="/gen">
+        <input type="hidden" name="generate" value="{{ user.username }}">
+        <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="submit">Generate</button>
+      </form>
+      <p class="lead py-2">
+        <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again?</a>
+      </p>
+    {% else %}
+      <h1>Find a user.</h1>
+      <p class="text-muted">Enter the Twitter username exactly as it appears on the profile</p>
+      <form class="px-5 pb-2 px-md-5 text-black no-shadow" action="/gen">
+        <div class="form-floating">
+          <input type="search" class="form-control" id="floatingInput" name="username" placeholder="elonmusk" type="submit" autocomplete="off" required>
+          <label for="floatingInput">Twitter username</label>
+        </div>
+      </form>
+      <p class="text-muted">User {{ username }} not found ☹</p>
+    {% endif %}
+  {% endif %}
+
+  {% if step == "GENERATE" %}
+    <h1>Tweets generated.</h1>
+    <p class="text-muted">Ran model on {{ generated_tweets.model_tweet_count }} tweets from @{{ username }}</p>
+    <div class="py-4">
+      {% if generated_tweets.tweets %}
+        {% for tweet in generated_tweets.tweets %}
+          <p class="lead">{{ tweet.text }}</p>
+        {% endfor %}
+      {% else %}
+        <p>No tweets could be generated ☹</p>
+      {% endif %}
+    </div>
+    <form class="lead" action="/gen">
+      <input type="hidden" name="generate" value="{{ username }}">
+      <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="submit">Regenerate</button>
+    </form>
+    <p class="lead py-2">
+      <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again?</a>
+    </p>
+  {% endif %}
+
+  {% if step == "ERROR" %}
+  <h1>Sorry!</h1>
+  <p class="lead">
+    Something went wrong.
+    <br>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bug" viewBox="0 0 16 16">
+      <path d="M4.355.522a.5.5 0 0 1 .623.333l.291.956A4.979 4.979 0 0 1 8 1c1.007 0 1.946.298 2.731.811l.29-.956a.5.5 0 1 1 .957.29l-.41 1.352A4.985 4.985 0 0 1 13 6h.5a.5.5 0 0 0 .5-.5V5a.5.5 0 0 1 1 0v.5A1.5 1.5 0 0 1 13.5 7H13v1h1.5a.5.5 0 0 1 0 1H13v1h.5a1.5 1.5 0 0 1 1.5 1.5v.5a.5.5 0 1 1-1 0v-.5a.5.5 0 0 0-.5-.5H13a5 5 0 0 1-10 0h-.5a.5.5 0 0 0-.5.5v.5a.5.5 0 1 1-1 0v-.5A1.5 1.5 0 0 1 2.5 10H3V9H1.5a.5.5 0 0 1 0-1H3V7h-.5A1.5 1.5 0 0 1 1 5.5V5a.5.5 0 0 1 1 0v.5a.5.5 0 0 0 .5.5H3c0-1.364.547-2.601 1.432-3.503l-.41-1.352a.5.5 0 0 1 .333-.623zM4 7v4a4 4 0 0 0 3.5 3.97V7H4zm4.5 0v7.97A4 4 0 0 0 12 11V7H8.5zM12 6a3.989 3.989 0 0 0-1.334-2.982A3.983 3.983 0 0 0 8 2a3.983 3.983 0 0 0-2.667 1.018A3.989 3.989 0 0 0 4 6h8z"/>
+    </svg>
+  </p>
+  <p class="lead py-2">
+    <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again</a>
+  </p>
+  {% endif %}
+{% endblock body %}
