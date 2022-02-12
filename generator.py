@@ -29,7 +29,6 @@ def fetch_user(username):
         return user_cache[username]
 
     user = client.get_user(username=username).data
-    print(client.get_user(username=username))
 
     # Store in cache
     user_cache[username] = user

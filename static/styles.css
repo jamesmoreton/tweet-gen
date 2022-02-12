@@ -10,7 +10,11 @@
   color: #333;
   text-shadow: none; /* Prevent inheritance from `body` */
 }
-
+.btn-secondary.disabled, .btn-secondary:disabled {
+  color: #333;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
 
 /*
  * Base structure

@@ -23,9 +23,9 @@
       <div class="py-4">
         <a href="https://twitter.com/{{ user.username }}" class="twitter-follow-button" data-size="large" data-show-count="true">@{{ user.username }}</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
-      <form class="lead" action="/gen">
+      <form id="genForm" class="lead" action="/gen">
         <input type="hidden" name="generate" value="{{ user.username }}">
-        <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="submit">Generate</button>
+        <button type="submit" id="genButton" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Generate</button>
       </form>
       <p class="lead py-2">
         <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again?</a>
@@ -55,9 +55,9 @@
         <p>No tweets could be generated ☹</p>
       {% endif %}
     </div>
-    <form class="lead" action="/gen">
+    <form id="genForm" class="lead" action="/gen">
       <input type="hidden" name="generate" value="{{ username }}">
-      <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="submit">Regenerate</button>
+      <button type="submit" id="genButton" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Regenerate</button>
     </form>
     <p class="lead py-2">
       <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again?</a>
@@ -77,4 +77,20 @@
     <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again</a>
   </p>
   {% endif %}
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#genButton").click(function() {
+        // disable button
+        $(this).prop("disabled", true);
+        // add spinner to button
+        $(this).html(
+          `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...`
+        );
+        // submit the form
+        $("#genForm").submit();
+      });
+    });
+  </script>
 {% endblock body %}
