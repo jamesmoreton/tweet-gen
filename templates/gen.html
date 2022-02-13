@@ -40,37 +40,39 @@
 
   {% if step == "GENERATE" %}
     <h1>Tweets generated.</h1>
-    <p class="text-muted">Ran model on {{ generated_tweets.model_tweet_count }} tweets from @{{ username }}</p>
-    <div class="py-4">
-      {% if generated_tweets.tweets %}
-        {% for tweet in generated_tweets.tweets %}
-          <p class="lead">{{ tweet.text }}</p>
-        {% endfor %}
-      {% else %}
+    <p class="text-muted">Ran model on {{ response.model_tweet_count }} tweets from @{{ response.user.username }}</p>
+    {% if response.tweets %}
+      <div class="list-group pb-4">
+      {% for tweet in response.tweets %}
+        <div class="list-group-item list-group-item-action list-group-item-override d-flex gap-3 py-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-robot flex-shrink-0" viewBox="0 0 16 16">
+            <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5ZM3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.58 26.58 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.933.933 0 0 1-.765.935c-.845.147-2.34.346-4.235.346-1.895 0-3.39-.2-4.235-.346A.933.933 0 0 1 3 9.219V8.062Zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a24.767 24.767 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25.286 25.286 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135Z"/>
+            <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2V1.866ZM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5Z"/>
+          </svg>
+          <div class="d-flex gap-2 w-100">
+            <div>
+              <p class="mb-0">
+                <span>{{ response.user.name }}</span>
+                <span class="opacity-50"> @{{ response.user.username }} • now</span>
+              </p>
+              <p class="mb-0">{{ tweet.text }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    {% else %}
+      <div class="py-4">
         <p>No tweets could be generated ☹</p>
-      {% endif %}
-    </div>
+      </div>
+    {% endif %}
     <form id="genForm" class="lead" action="/gen">
-      <input type="hidden" name="generate" value="{{ username }}">
+      <input type="hidden" name="generate" value="{{ response.user.username }}">
       <button type="submit" id="genButton" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Regenerate</button>
     </form>
     <p class="lead py-2">
       <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again?</a>
     </p>
-  {% endif %}
-
-  {% if step == "ERROR" %}
-  <h1>Sorry!</h1>
-  <p class="lead">
-    Something went wrong.
-    <br>
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bug" viewBox="0 0 16 16">
-      <path d="M4.355.522a.5.5 0 0 1 .623.333l.291.956A4.979 4.979 0 0 1 8 1c1.007 0 1.946.298 2.731.811l.29-.956a.5.5 0 1 1 .957.29l-.41 1.352A4.985 4.985 0 0 1 13 6h.5a.5.5 0 0 0 .5-.5V5a.5.5 0 0 1 1 0v.5A1.5 1.5 0 0 1 13.5 7H13v1h1.5a.5.5 0 0 1 0 1H13v1h.5a1.5 1.5 0 0 1 1.5 1.5v.5a.5.5 0 1 1-1 0v-.5a.5.5 0 0 0-.5-.5H13a5 5 0 0 1-10 0h-.5a.5.5 0 0 0-.5.5v.5a.5.5 0 1 1-1 0v-.5A1.5 1.5 0 0 1 2.5 10H3V9H1.5a.5.5 0 0 1 0-1H3V7h-.5A1.5 1.5 0 0 1 1 5.5V5a.5.5 0 0 1 1 0v.5a.5.5 0 0 0 .5.5H3c0-1.364.547-2.601 1.432-3.503l-.41-1.352a.5.5 0 0 1 .333-.623zM4 7v4a4 4 0 0 0 3.5 3.97V7H4zm4.5 0v7.97A4 4 0 0 0 12 11V7H8.5zM12 6a3.989 3.989 0 0 0-1.334-2.982A3.983 3.983 0 0 0 8 2a3.983 3.983 0 0 0-2.667 1.018A3.989 3.989 0 0 0 4 6h8z"/>
-    </svg>
-  </p>
-  <p class="lead py-2">
-    <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again</a>
-  </p>
   {% endif %}
 
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>

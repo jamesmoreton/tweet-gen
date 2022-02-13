@@ -31,8 +31,7 @@ def gen():
         return render_template(
             "gen.html",
             step="GENERATE",
-            username=generate_username,
-            generated_tweets=generated_tweets
+            response=generated_tweets
         )
 
     return render_template("gen.html", step="START")

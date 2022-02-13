@@ -16,6 +16,17 @@
   border-color: #6c757d;
 }
 
+.list-group-item-override {
+  text-align: left;
+  background-color: inherit;
+  color: inherit;
+  border: none;
+}
+.list-group-item-action:hover {
+  color: inherit;
+  background-color: inherit;
+}
+
 /*
  * Base structure
  */

@@ -11,9 +11,10 @@ client = tweepy.Client(os.environ["TWITTER_BEARER_TOKEN"])
 
 class GenerateResponse:
 
-    def __init__(self, tweets, model_tweet_count):
+    def __init__(self, tweets, model_tweet_count, user):
         self.tweets = tweets
         self.model_tweet_count = model_tweet_count
+        self.user = user
 
 
 def fetch_user(username):
@@ -38,7 +39,7 @@ def fetch_user(username):
 def generate(username):
     """
     Returns generated tweets along with meta data on model run with format:
-      <GenerateResponse tweets=["hi"] tweet_count=200>
+      <GenerateResponse tweets=["hi"] tweet_count=200 user=User>
     """
     user = fetch_user(username)
 
@@ -73,14 +74,19 @@ def generate(username):
         corpus = "\n".join(tweets_sanitised)
 
         # Train model
-        tweet_model = (markovify.Text(corpus), len(tweets_sanitised))
+        try:
+            markov_model = markovify.Text(corpus)
+            tweet_model = (markov_model, len(tweets_sanitised), user)
+        except Exception as e:
+            print(f"Unable to generate Markov model for {user.username} using {len(tweets_sanitised)} tweets")
+            return GenerateResponse(None, len(tweets_sanitised), user)
 
         # Store in cache
         user_tweet_model_cache[user.id] = tweet_model
 
     # Generate sentences
     generated_tweets = list()
-    for i in range(5):
+    for i in range(3):
         s = tweet_model[0].make_sentence()
         if any(t['text'] == s for t in generated_tweets):
             continue
@@ -92,5 +98,6 @@ def generate(username):
 
     return GenerateResponse(
         generated_tweets if generated_tweets else None,
-        tweet_model[1]
+        tweet_model[1],
+        tweet_model[2]
     )
