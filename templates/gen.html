@@ -7,40 +7,35 @@
 
 {% block body %}
   {% if step == "START" %}
-  <h1>Find a user.</h1>
-  <p class="text-muted">Enter the Twitter username exactly as it appears on the profile</p>
-  <form class="px-5 pb-2 px-md-5 text-black no-shadow" action="/gen">
-    <div class="form-floating">
-      <input type="search" class="form-control" id="floatingInput" name="username" placeholder="elonmusk" type="submit" autocomplete="off" required>
-      <label for="floatingInput">Twitter username</label>
-    </div>
-  </form>
+    <h1>Find a user.</h1>
+    <p class="text-muted">Enter the Twitter username exactly as it appears on the profile</p>
+    <form class="px-5 pb-2 px-md-5 text-black no-shadow" action="/gen">
+      <div class="form-floating">
+        <input type="search" class="form-control" id="floatingInput" name="username" placeholder="username" autocomplete="off" pattern="^[a-zA-Z0-9_]{1,15}$" required>
+        <label for="floatingInput">Twitter username</label>
+      </div>
+    </form>
+    {% if username %}
+      {% if invalid %}
+        <p class="text-muted">User {{ username }} not valid</p>
+      {% else %}
+        <p class="text-muted">User {{ username }} not found ☹</p>
+      {% endif %}
+    {% endif %}
   {% endif %}
 
   {% if step == "USER" %}
-    {% if user %}
-      <h1>Found {{ user.name }}.</h1>
-      <div class="py-4">
-        <a href="https://twitter.com/{{ user.username }}" class="twitter-follow-button" data-size="large" data-show-count="true">@{{ user.username }}</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div>
-      <form id="genForm" class="lead" action="/gen">
-        <input type="hidden" name="generate" value="{{ user.username }}">
-        <button type="submit" id="genButton" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Generate</button>
-      </form>
-      <p class="lead py-2">
-        <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again?</a>
-      </p>
-    {% else %}
-      <h1>Find a user.</h1>
-      <p class="text-muted">Enter the Twitter username exactly as it appears on the profile</p>
-      <form class="px-5 pb-2 px-md-5 text-black no-shadow" action="/gen">
-        <div class="form-floating">
-          <input type="search" class="form-control" id="floatingInput" name="username" placeholder="elonmusk" type="submit" autocomplete="off" required>
-          <label for="floatingInput">Twitter username</label>
-        </div>
-      </form>
-      <p class="text-muted">User {{ username }} not found ☹</p>
-    {% endif %}
+    <h1>Found {{ user.name }}.</h1>
+    <div class="py-4">
+      <a href="https://twitter.com/{{ user.username }}" class="twitter-follow-button" data-size="large" data-show-count="true">@{{ user.username }}</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
+    <form id="genForm" class="lead" action="/gen">
+      <input type="hidden" name="generate" value="{{ user.username }}">
+      <button type="submit" id="genButton" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Generate</button>
+    </form>
+    <p class="lead py-2">
+      <a href="/gen" class="btn btn-sm btn-secondary border-white bg-white">Start again?</a>
+    </p>
   {% endif %}
 
   {% if step == "GENERATE" %}
