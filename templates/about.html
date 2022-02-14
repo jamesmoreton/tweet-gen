@@ -1,10 +1,42 @@
 {% extends "layout.html" %}
 
+{% block bodytag %}
+<body class="d-flex text-center text-white bg-dark">
+{% endblock bodytag %}
+
 {% block nav %}
 <a class="nav-link" href="/">Home</a>
 <a class="nav-link active" aria-current="page" href="/about">About</a>
 {% endblock nav %}
 
 {% block body %}
-  <p>About.</p>
+  <div class="about py-5 overflow-auto">
+    <p>Tweet Gen uses a simple <a href="https://en.wikipedia.org/wiki/Markov_chain" class="text-white" target=”_blank”>Markov chain</a> generator to create unique phrases in the style of any Twitter user based on their previous tweets.</p>
+
+    <p>Once the Twitter user is found, using the <a href="https://developer.twitter.com/en/docs" class="text-white" target=”_blank”>Twitter API</a> the user’s most recent Tweets are fetched (up to 3,200 Tweets). These Tweets are used to build a Markov model using <a href="https://github.com/jsvine/markovify" class="text-white" target=”_blank”>Markovify</a> with sentences then generated against this model.</p>
+
+    <h4>Theory</h4>
+
+    <p>The process of generating these Tweets relies on fields within the domain of <a href="https://en.wikipedia.org/wiki/Natural_language_processing" class="text-white" target=”_blank”>natural language processing</a>, the subfield of computer science that allows computers to process and produce human language.</p>
+
+    <p>Specifically, the generator relies on the concept of <em>n</em>-grams and Markov models.</p>
+
+    <h5><em>n</em>-grams</h5>
+
+    <p><a href="https://en.wikipedia.org/wiki/N-gram" class="text-white" target=”_blank”><em>n</em>-grams</a> are a contiguous sequence of <em>n</em> items from a sample of text. In the following sentence, the first three <em>n</em>-grams of size 2 (also known as <em>bigrams</em>) are “to be”, “be or”, “or not”:</p>
+
+    <p class="text-muted">-- “To be, or not to be: that is the question”</p>
+
+    <p>Using <em>n</em>-grams, since some words occur together more often than others, it’s possible to predict the next word with some probability (e.g. predictive text on phones). Thus, breaking sentences into <em>n</em>-grams is a helpful step in natural language processing.</p>
+
+    <h5>Markov models</h5>
+
+    <p><a href="https://en.wikipedia.org/wiki/Markov_model" class="text-white" target=”_blank”>Markov models</a> consist of nodes, the value of each of which has a probability distribution based on a finite number of previous nodes. These models can be used to generate text, establishing probabilities for every <em>n</em>-th token in an <em>n</em>-gram based on <em>n</em> words preceding it.</p>
+
+    <p>For example, using trigrams, after the Markov model has two words, it can choose a third one from a probability distribution based on the first two. Then, it can choose a fourth word from a probability distribution based on the second and third words, and so on.</p>
+
+    <p>If interested in the specific implementation used in Tweet Gen, check out <a href="https://github.com/jsvine/markovify" class="text-white" target=”_blank”>Markovify</a>.</p>
+
+    <p>You may have noticed however that these sentences lack actual meaning or purpose! The point of Tweet Gen is to demonstrate how simple yet effective (and entertaining) this basic form of natural language processing can be.</p>
+  </div>
 {% endblock body %}
