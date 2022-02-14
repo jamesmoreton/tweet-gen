@@ -10,7 +10,7 @@
 {% endblock nav %}
 
 {% block body %}
-  <div class="about py-5 overflow-auto">
+  <div class="about py-5">
     <p>Tweet Gen uses a simple <a href="https://en.wikipedia.org/wiki/Markov_chain" class="text-white" target=”_blank”>Markov chain</a> generator to create unique phrases in the style of any Twitter user based on their previous tweets.</p>
 
     <p>Once the Twitter user is found, using the <a href="https://developer.twitter.com/en/docs" class="text-white" target=”_blank”>Twitter API</a> the user’s most recent Tweets are fetched (up to 3,200 Tweets). These Tweets are used to build a Markov model using <a href="https://github.com/jsvine/markovify" class="text-white" target=”_blank”>Markovify</a> with sentences then generated against this model.</p>
