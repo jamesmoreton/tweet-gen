@@ -2,6 +2,9 @@ import os
 import tweepy
 import re
 import markovify
+import logging
+
+logger = logging.getLogger(__name__)
 
 user_cache = dict()
 user_tweet_model_cache = dict()
@@ -26,9 +29,10 @@ def fetch_user(username):
     # Standardise username format - tweeter is case-insensitive
     username = username.lower()
     if username in user_cache:
-        print(f"Fetching {username} from cache!")
+        logger.info(f"Fetching {username} from cache")
         return user_cache[username]
 
+    logger.info(f"Fetching user {username} from Twitter")
     user = client.get_user(username=username).data
 
     # Store in cache
@@ -45,9 +49,10 @@ def generate(username):
 
     # Only fetch from cache if existing search has enough tweets (200)
     if user.id in user_tweet_model_cache and user_tweet_model_cache[user.id][1] >= 200:
-        print(f"Fetching tweet model from cache!")
+        logger.info(f"Fetching tweet model from cache")
         tweet_model = user_tweet_model_cache[user.id]
     else:
+        logger.info(f"Fetching {username} user tweets from Twitter")
         tweets = tweepy.Paginator(
             client.get_users_tweets,
             id=user.id,
@@ -75,10 +80,11 @@ def generate(username):
 
         # Train model
         try:
+            logger.info(f"Generating Markov model for {username} using {len(tweets_sanitised)} tweets")
             markov_model = markovify.Text(corpus)
             tweet_model = (markov_model, len(tweets_sanitised), user)
         except Exception as e:
-            print(f"Unable to generate Markov model for {user.username} using {len(tweets_sanitised)} tweets")
+            logger.info(f"Failed to generate Markov model for {username} using {len(tweets_sanitised)} tweets")
             return GenerateResponse(None, len(tweets_sanitised), user)
 
         # Store in cache
@@ -88,13 +94,9 @@ def generate(username):
     generated_tweets = list()
     for i in range(3):
         s = tweet_model[0].make_sentence()
-        if any(t['text'] == s for t in generated_tweets):
-            continue
         if not s or s in generated_tweets:
             continue
-        generated_tweet = dict()
-        generated_tweet["text"] = s
-        generated_tweets.append(generated_tweet)
+        generated_tweets.append(s)
 
     return GenerateResponse(
         generated_tweets if generated_tweets else None,

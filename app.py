@@ -1,8 +1,13 @@
 import generator
 import re
+import logging
+import sys
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+logger = logging.getLogger(__name__)
 
 
 @app.route("/")
@@ -42,7 +47,7 @@ def about():
 
 @app.errorhandler(Exception)
 def handle_exception(e):
-    print(e)
+    logger.info(e)
     return render_template("error.html", reason="GENERIC", e=e), 500
 
 @app.errorhandler(404)
@@ -53,4 +58,4 @@ def valid(username):
     return re.match(r"^[a-zA-Z0-9_]{1,15}$", username)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
