@@ -1,0 +1,21 @@
+version: 2
+mergeable:
+  - when: pull_request.*, pull_request_review.*
+    validate:
+      - do: description
+        no_empty:
+          enabled: true
+          message: 'This PR needs a description'
+        must_include:
+          regex: '^.{10}'
+          regex_flag: 's'
+          message: 'This PR needs a descriptive description'
+  - when: schedule.repository
+    validate:
+      - do: stale
+        days: 20
+        type: pull_request, issues
+    pass:
+      - do: comment
+        payload:
+          body: This is old. Is it still relevant?
