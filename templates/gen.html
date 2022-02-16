@@ -62,6 +62,12 @@
               <p class="mb-0">{{ tweet }}</p>
             </div>
           </div>
+          <a class="twitter-share-button"
+            href="https://twitter.com/intent/tweet"
+            data-text='"{{ tweet }}"&#010;&#010;Created via Tweet Gen on @{{ response.user.username }}&#010;'
+            data-url="http://www.tweetgen.co.uk/">
+          Tweet
+          </a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
       {% endfor %}
       </div>
