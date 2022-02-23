@@ -10,6 +10,8 @@ A web app allowing you to create unique Tweets in the style of any Twitter user.
 - Markovify models created with [Markovify](https://github.com/jsvine/markovify)
 - Deployed on [Heroku](https://www.heroku.com/home)
 
+Contributions welcome - feel free to raise a PR!
+
 ## Repo Visualizer
 
 Experimenting with the [repo-visualizer](https://github.com/githubocto/repo-visualizer) GitHub Action. Read more [here](https://next.github.com/projects/repo-visualization) if interested.
