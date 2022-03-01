@@ -43,7 +43,7 @@ def fetch_user(username):
 def generate(username):
     """
     Returns generated tweets along with meta data on model run with format:
-      <GenerateResponse tweets=["hi"] tweet_count=200 user=User>
+      <GenerateResponse tweets=["hi"] model_tweet_count=200 user=User>
     """
     user = fetch_user(username)
 
