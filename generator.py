@@ -67,11 +67,19 @@ def generate(username):
             san = re.sub(r"https.*", "", tweet.text)
 
             # Remove user tags
-            while re.search(r"^@\w* ", san):
-                san = re.sub(r"^@\w* ", "", san)
+            while re.search(r"@\w+", san):
+                san = re.sub(r"@\w+", "", san)
+
+            # Strip whitespace & replace ampersand
+            san = san.strip()
+            san = san.replace("&amp;", "&")
+
+            # Skip if we're not left with anything useful
+            if not san or not re.search(r"\w", san):
+                continue
 
             # Append full stop
-            if not san.endswith("."):
+            if not san.endswith((".", "!", "?")):
                 san = san + "."
 
             tweets_sanitised.append(san)
