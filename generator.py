@@ -76,7 +76,6 @@ def generate(username):
 
             # Skip if we're not left with anything useful
             if not san or not re.search(r"\w", san):
-                print(f"------- SKIPPING: {tweet.text}")
                 continue
 
             # Append full stop
