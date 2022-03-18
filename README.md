@@ -7,7 +7,7 @@ A web app allowing you to create unique Tweets in the style of any Twitter user.
 - Python backend; HTML/CSS/JavaScript frontend
 - [Flask](https://flask.palletsprojects.com/en/1.1.x/) framework
 - Uses [Twitter API](https://developer.twitter.com/en)
-- Markovify models created with [Markovify](https://github.com/jsvine/markovify)
+- Markov models created with [Markovify](https://github.com/jsvine/markovify)
 - Deployed on [Heroku](https://www.heroku.com/home)
 
 Contributions welcome - feel free to raise a PR!
