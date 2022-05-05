@@ -14,6 +14,6 @@ Contributions welcome - feel free to raise a PR!
 
 ## Repo Visualizer
 
-Experimenting with the [repo-visualizer](https://github.com/githubocto/repo-visualizer) GitHub Action. Read more [here](https://next.github.com/projects/repo-visualization).
+Experimenting with the [repo-visualizer](https://github.com/githubocto/repo-visualizer) GitHub Action. Read more [here](https://next.github.com/projects/repo-visualization) if interested.
 
 ![Visualization of this repo](./diagram.svg)
